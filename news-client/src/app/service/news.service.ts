@@ -20,4 +20,13 @@ export class NewsService {
   getNews(tag: string): Observable<News[]> {
     return this.http.get<News[]>('api/getnews/'+tag)
   }
+
+  uploadImage(file: File) {
+    const form = new FormData()
+    form.set("image", file)
+
+    return firstValueFrom(
+      this.http.post<any>('/image', form)
+    )
+  }
 }

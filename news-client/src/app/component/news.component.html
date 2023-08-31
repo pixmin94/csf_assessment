@@ -5,13 +5,13 @@
     <td><button type="button" [routerLink]="['/post']">Post News</button></td>
   </tr>
 
-  <div *ngFor="let n of news">
+  <div *ngFor="let n of news" style="border: 1px solid black;">
     <tr>
       <td>{{n.title}}</td>
     </tr>
     <tr>
       <p>{{n.description}}</p>
     </tr>
-
   </div>
+
 </table>

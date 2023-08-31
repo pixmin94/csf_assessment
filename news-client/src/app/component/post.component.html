@@ -7,12 +7,16 @@
       <td><input type="text" formControlName="title"></td>
     </tr>
     <tr>
+      <td>Photo:</td>
+      <td><input type="file" placeholder="Image File" accept="image/*" #image></td>
+    </tr>
+    <tr>
       <td>Description: </td>
       <td><input type="text" formControlName="description"></td>
     </tr>
     <tr>
       <td>Tags: </td>
-      <td><input type="text" formControlName="tag"></td>
+      <td><input type="text" #tag></td>
       <td><button type="button" (click)="addTag()">+</button></td>
     </tr>
     <div formArrayName="tags">

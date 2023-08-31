@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NewsService } from '../service/news.service';
 import { News } from '../model/models';
@@ -11,7 +11,13 @@ import { SimpleChanges } from '@angular/core';
 })
 export class PostComponent implements OnInit{
   form!: FormGroup
+  tags!: []
   tagsArray!: FormArray
+
+  @ViewChild('image')
+  audio!: ElementRef
+
+  imageFile = ""
 
   constructor(private fb: FormBuilder,
               private service: NewsService) { }
@@ -21,8 +27,14 @@ export class PostComponent implements OnInit{
   }
 
   postNews() {
-    const news: News = this.form.value
-    // console.log(news)
+    let news: News = this.form.value
+
+    const file = this.image.nativeElement.files[0] as File
+    this.imageFile = file.name
+
+    news['image'] = this.service.uploadImage(file)
+    news['tags'] = this.tags
+    console.log(news)
     this.service.postNews(news)
   }
 
@@ -44,7 +56,6 @@ export class PostComponent implements OnInit{
     return this.fb.group({
       title: this.fb.control<string>('', [ Validators.required, Validators.minLength(5)]),
       description: this.fb.control<string>(''),
-      tag: this.fb.control<string>(''),
       tags: this.tagsArray
     })
   }
