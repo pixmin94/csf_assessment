@@ -1,0 +1,29 @@
+<h1>Share a News</h1>
+
+<form [formGroup]="form" (submit)="postNews()">
+  <table>
+    <tr>
+      <td>Title: </td>
+      <td><input type="text" formControlName="title"></td>
+    </tr>
+    <tr>
+      <td>Description: </td>
+      <td><input type="text" formControlName="description"></td>
+    </tr>
+    <tr>
+      <td>Tags: </td>
+      <td><input type="text" formControlName="tag"></td>
+      <td><button type="button" (click)="addTag()">+</button></td>
+    </tr>
+    <div formArrayName="tags">
+      <tr *ngFor="let t of tagsArray.controls; let idx = index" [formGroupName]="idx">
+        <td><button type="button" (click)="removeTag(idx)">{{t}}</button></td>
+      </tr>
+    </div>
+
+    <tr>
+      <td><button>Back</button></td>
+      <td><button type="button" (click)="postNews()">Post</button></td>
+    </tr>
+  </table>
+</form>
