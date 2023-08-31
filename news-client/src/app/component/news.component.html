@@ -1,0 +1,17 @@
+<h2>List of News with #{{tag}}</h2>
+<table>
+  <tr>
+    <td><button type="button" [routerLink]="['/']">Back</button></td>
+    <td><button type="button" [routerLink]="['/post']">Post News</button></td>
+  </tr>
+
+  <div *ngFor="let n of news">
+    <tr>
+      <td>{{n.title}}</td>
+    </tr>
+    <tr>
+      <p>{{n.description}}</p>
+    </tr>
+
+  </div>
+</table>

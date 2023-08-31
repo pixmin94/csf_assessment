@@ -1,0 +1,26 @@
+<table>
+  <tr>
+    <td><label for="duration">Time</label></td>
+    <td>
+      <select id="duration">
+        <option value="5">5 mins</option>
+        <option value="10">10 mins</option>
+        <option value="15">15 mins</option>
+        <option value="30">30 mins</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <button type="button" [routerLink]="['/post']">Post News</button>
+  </tr>
+</table>
+
+<br>
+<h2>Top Tags</h2>
+<div>
+  <ul *ngFor="let t of tags">
+    <a (click)="getNewsByTag(t.tag)">{{t.tag}} 	&#40;{{t.count}}&#41; </a>
+    <button (click)="getNewsByTag(t.tag)">See News</button>
+  </ul>
+</div>

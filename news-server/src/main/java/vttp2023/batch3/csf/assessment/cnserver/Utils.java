@@ -20,6 +20,17 @@ public class Utils {
         return r.readObject();
     }
 
+    public static News toNewsObject(Document doc) {
+        // JsonObject o = toJSON(news);
+        News n = new News();
+        n.setTitle(doc.getString("title"));
+        n.setDescription(doc.getString("description"));
+        List<String> tags = new ArrayList<>();
+		tags.add(doc.getString("tags"));
+        n.setTags(tags);
+        return n;
+    }
+
     public static News toNewsObject(String news) {
         JsonObject o = toJSON(news);
         News n = new News();

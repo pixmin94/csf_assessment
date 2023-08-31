@@ -8,10 +8,13 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationPipeline;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.aggregation.UnwindOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
 import vttp2023.batch3.csf.assessment.cnserver.models.News;
@@ -55,7 +58,7 @@ public class NewsRepository {
 				count: 1
 		} },
 	]) */
-	public List<TagCount> getTags() {
+	public List<Document> getTags() {
 		UnwindOperation unwind = Aggregation.unwind("tags");
 		GroupOperation group = Aggregation.group("tags")
 			.count().as("count");
@@ -64,17 +67,28 @@ public class NewsRepository {
 		Aggregation pipeline = Aggregation.newAggregation(unwind, group, project);
 		AggregationResults<Document> result = template
 			.aggregate(pipeline, "news", Document.class);
-		List<Document> tagsDoc = result.getMappedResults();
-		System.out.println(tagsDoc);
-		List<TagCount> tagsObj = tagsDoc.stream()
-			.map(o -> Utils.toTagCountObj(o))
-			.collect(Collectors.toList());
-		return tagsObj;
+		return result.getMappedResults();
 	}
 
 
-	// TODO: Task 3
-	// Write the native Mongo query in the comment above the method
+	/* db.news.aggregate([
+		{ $unwind: '$tags' },
+		{ $match: { tags : "test"}},
+		{ $project: {
+			"title": 1,
+			"description": 1,
+			"tags": 1
+		}}
+	]) */
+	public List<Document> getNewsByTag(String tag) {
+		UnwindOperation unwind = Aggregation.unwind("tags");
+		MatchOperation match = Aggregation.match(Criteria.where("tags").is(tag));
+		ProjectionOperation project = Aggregation.project("title", "description", "tags");
+		Aggregation pipeline = Aggregation.newAggregation(unwind, match, project);
+
+		AggregationResults<Document> result = template.aggregate(pipeline, "news", Document.class);
+		return result.getMappedResults();
+	}
 
 
 }

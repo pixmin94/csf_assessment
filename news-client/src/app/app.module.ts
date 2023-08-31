@@ -7,11 +7,15 @@ import { PostComponent } from './component/post.component';
 import { NewsService } from './service/news.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TagsComponent } from './component/tags.component';
+import { NewsComponent } from './component/news.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PostComponent
+    PostComponent,
+    TagsComponent,
+    NewsComponent
   ],
   imports: [
     BrowserModule,
